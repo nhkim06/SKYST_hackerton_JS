@@ -30,8 +30,8 @@ window.addEventListener('load', function(){
   constructor (gameWidth, gameHeight){ 
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
-    this.width = 32;
-    this.height = 32;
+    this.width = 128;
+    this.height = 126;
     this.x = 0;
     this.y = this.gameHeight - this.height;
     this.image = document.getElementById('playerImage');
@@ -53,18 +53,30 @@ window.addEventListener('load', function(){
     } else {
       this.speed= 0;
     }
-
     this.x += this.speed;
-    this.y
+    // this.y -= this.speed/3;
     if (this.x < 0) this.x = 0;
     else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-
   }
 
 
   }
 
   class Background{
+    constructor (gameWidth, gameHeight){ 
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+      this.image = document.getElementById('backgroundImage');
+      this.x = -600;
+      this.y = -100;
+      this.width = 1920;
+      this.height = 1080;
+
+    }
+    draw(context){
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+    }
 
 
 
@@ -85,11 +97,13 @@ window.addEventListener('load', function(){
 
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
+  const background = new Background(canvas.width, canvas.height);
 
   function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw(ctx);
     player.draw(ctx);
-    player.update();
+    player.update(input);
     requestAnimationFrame(animate);
 
   }
