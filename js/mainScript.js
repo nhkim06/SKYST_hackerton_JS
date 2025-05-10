@@ -133,7 +133,7 @@ window.addEventListener('load', () => {
 
   function displayStatusText(context) {
     const text = '위쪽 화살표를 눌러 이동하세요.';
-    context.font = 'bold 30px Helvetica';
+    context.font = 'lighter 30px "Black Han Sans"';
     context.strokeStyle = 'white';
     context.lineWidth = 4;
     context.strokeText(text, 20, 50);
