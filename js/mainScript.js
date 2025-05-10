@@ -108,14 +108,21 @@ window.addEventListener('load', function(){
     }
   }
 
-  function handleDoors(){
+  function displayStatusText(context){
+    const text = '위쪽 화살표를 눌러 이동하세요.';
+    const x = 20;
+    const y = 50;
 
+    context.font = 'bold 30px Helvetica';
+    context.lineWidth = 4;
+    context.strokeStyle = 'white';
+    context.lineJoin = 'round';
 
+    context.strokeText(text, x, y);
+    context.fillStyle = 'black';
+    context.fillText(text, x, y);
   }
 
-  function displayStatusText(){
-
-  }
 
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
@@ -137,6 +144,7 @@ window.addEventListener('load', function(){
     door1.draw(ctx);
     door2.draw(ctx);
     door3.draw(ctx);
+    displayStatusText(ctx);
     requestAnimationFrame(animate);
 
   }
