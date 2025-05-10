@@ -1,9 +1,12 @@
+// Todo : sceneNum 값 업데이트, 다음 넘어갈 html 파일 업데이트
+
 window.addEventListener('load', function(){
   const canvas = this.document.getElementById('canvas1');
   const ctx = canvas.getContext('2d');
   canvas.width = 800;
   canvas.height = 720;
   let nextScene = false;
+  let sceneNum = 1;
 
   class InputHandler{
     constructor(){
@@ -33,9 +36,6 @@ window.addEventListener('load', function(){
     this.gameHeight = gameHeight;
     this.width = 128;
     this.height = 126;
-    this.x = 150;
-    this.y = this.gameHeight - this.height;
-    this.image = document.getElementById('playerImage');
     this.frameX = 1;
     this.maxFrame = 3;
     this.frameY = 0;
@@ -45,11 +45,28 @@ window.addEventListener('load', function(){
     this.speed = 0;
     this.vy = 0;
 
+    if (sceneNum === 1){
+      this.x = 150;
+      this.y = this.gameHeight - this.height;
+      this.image = document.getElementById('playerImage');
+    }
+    else if (sceneNum === 2){
+      this.x = 500;
+      this.y = 520;
+      this.image = document.getElementById('playerImage2');
+    }
+    else if (sceneNum === 3){
+      this.x = 150;
+      this.y = 400;
+      this.image = document.getElementById('playerImage');
+    }
+    
+
   }
   draw(context){
   // context.fillStyle = 'white';
   // context.fillRect(this.x, this.y, this.width, this.height);
-  context.strokeRect(this.x, this.y, this.width, this.height);
+  // context.strokeRect(this.x, this.y, this.width, this.height);
   context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, 
                     this.width, this.height, this.x, this.y, this.width, this.height);
   }
@@ -78,8 +95,19 @@ window.addEventListener('load', function(){
     } else {
       this.speed= 0;
     }
-    this.x += this.speed;
-    // this.y -= this.speed/3;
+
+    if (sceneNum === 1){
+      this.x += this.speed;
+    }
+    else if (sceneNum === 2){
+      this.x -= this.speed;
+      this.y -= this.speed/3;
+    }
+    else if (sceneNum === 3){
+      this.x += this.speed;
+      this.y -= this.speed/3;
+    }
+
     if (this.x < 0) this.x = 0;
     else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
   }
@@ -115,7 +143,7 @@ window.addEventListener('load', function(){
 
     }
     draw(context){
-      context.strokeRect(this.x, this.y, this.width, this.height);
+      // context.strokeRect(this.x, this.y, this.width, this.height);
       context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
   }
@@ -133,7 +161,6 @@ window.addEventListener('load', function(){
     context.strokeText(text, x, y);
     context.fillStyle = 'black';
     context.fillText(text, x, y);
-
   }
 
 
@@ -152,15 +179,27 @@ window.addEventListener('load', function(){
     // console.log(deltaTime);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background.draw(ctx);
-    player.draw(ctx);
-    player.update(input, deltaTime, door1);
     door1.draw(ctx);
     door2.draw(ctx);
     door3.draw(ctx);
+    player.draw(ctx);
+
+    if (sceneNum === 1){
+      player.update(input, deltaTime, door1);
+    }
+    else if (sceneNum === 2){
+      player.update(input, deltaTime, door2);
+    }
+    else if (sceneNum === 3){
+      player.update(input, deltaTime, door3);
+    }
+    
     displayStatusText(ctx);
 
     if (nextScene) {
-      // next scene
+      if (sceneNum === 1) window.location.href = '.html'  // add html file
+      else if (sceneNum === 2) window.location.href = '.html'  // add html file
+      if (sceneNum === 3) window.location.href = '.html'  // add html file
     }
     else {
       requestAnimationFrame(animate);
