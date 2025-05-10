@@ -2,7 +2,7 @@
 
 //get json data
 async function getJSONdata() {
-  const res = await fetch("https://nhkim06.github.io/SKYST_db.json");
+  const res = await fetch("db.json");
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
   return res.json();
 }
@@ -17,11 +17,11 @@ window.addEventListener('load', async () => {
   
   try {
     const datas = await getJSONdata();
-    const sceneNum = datas.scene;
+    sceneNum = datas.scene;
   } catch (err) {
     console.error('데이터 로드 실패:', err);
   }
-  // console.log(sceneNum);
+  console.log(sceneNum);
 
   class InputHandler{
     constructor(){
