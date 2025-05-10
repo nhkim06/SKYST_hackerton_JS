@@ -3,13 +3,16 @@ const piano = document.getElementById("piano");
 const scoreDisplay = document.getElementById("score-display");
 const bgm = document.getElementById("bgm");
 
+const applause = new Audio("assets/applause.mp3");
+const boo = new Audio("assets/boo.mp3");
+
 let score = 0;
 let combo = 0;
 let missStreak = 0;
 let gameStarted = false;
 let freeze = false;
+let gameOverTriggered = false;
 
-// 중앙 메시지 박스
 const message = document.createElement("div");
 message.style.position = "absolute";
 message.style.top = "10%";
@@ -32,33 +35,53 @@ function showMessage(text, duration) {
   }, duration);
 }
 
-function showGameOverMessage() {
+function showGameOverMessage(isTimeout = false) {
   if (message.dataset.shown === "true") return;
   message.dataset.shown = "true";
+  gameOverTriggered = true;
 
-  const isSuccess = score >= 500;
+  const isSuccess = score >= 1500;
   message.style.top = "10%";
   message.style.color = isSuccess ? "lightgreen" : "red";
+  message.style.backgroundColor = "black";
+  message.style.padding = "20px";
+  message.style.borderRadius = "12px";
+  message.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
+  message.style.textAlign = "center";
 
-  message.innerHTML = `
-    <div style="text-align: center;">
-      <div>GAME OVER</div>
-      <div style="font-size: 32px; margin-top: 20px;">Final Score: ${score}</div>
-      <div style="font-size: 28px; margin-top: 10px;">
-        ${isSuccess ? 'Success!' : 'Fail...'}
-      </div>
+  let html = "";
+  if (!isTimeout) {
+    html += `<div>GAME OVER</div>`;
+  }
+
+  html += `
+    <div style="font-size: 32px; margin-top: 20px;">Final Score: ${score}</div>
+    <div style="font-size: 28px; margin-top: 10px;">
+      ${isSuccess ? 'Success!' : 'Fail...'}
     </div>
   `;
+
+  message.innerHTML = html;
   message.style.display = "block";
 
-  // 모든 노트 멈춤
   document.querySelectorAll(".note").forEach(note => {
     note.style.animationPlayState = "paused";
   });
 
-  // 음악 정지 및 되감기
   bgm.pause();
   bgm.currentTime = 0;
+
+  if (isSuccess) {
+    applause.play();
+    // 🎉 콘페티 효과
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 }
+    });
+  } else {
+    boo.play();
+  }
 }
 
 const keyToIndex = { a: 0, s: 1, d: 2, f: 3, j: 4, k: 5, l: 6 };
@@ -111,7 +134,7 @@ function spawnNote() {
       if (missStreak >= 5) {
         freeze = true;
         clearInterval(spawnInterval);
-        showGameOverMessage();
+        showGameOverMessage(false);
       }
     }
   }, 3100);
@@ -120,15 +143,14 @@ function spawnNote() {
 let spawnInterval;
 
 function startGame() {
-  showMessage("Get Ready...", 3000);
+  showMessage("Get Ready...", 5000);
 
   setTimeout(() => {
     gameStarted = true;
     spawnInterval = setInterval(spawnNote, 1000);
-  }, 3000);
+  }, 5000);
 }
 
-// 🎹 사용자 입력 후 음악 재생 & 게임 시작
 document.addEventListener("keydown", (e) => {
   if (!gameStarted && e.key === "Enter") {
     bgm.volume = 1.0;
@@ -190,6 +212,14 @@ document.addEventListener("keydown", (e) => {
   if (missStreak >= 5) {
     freeze = true;
     clearInterval(spawnInterval);
-    showGameOverMessage();
+    showGameOverMessage(false);
+  }
+});
+
+bgm.addEventListener("ended", () => {
+  if (!gameOverTriggered) {
+    freeze = true;
+    clearInterval(spawnInterval);
+    showGameOverMessage(true);
   }
 });
