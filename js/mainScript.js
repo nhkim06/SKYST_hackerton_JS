@@ -1,20 +1,98 @@
-// DOM이 모두 로드된 후 실행
-window.addEventListener('DOMContentLoaded', () => {
-  const gameArea = document.getElementById('game-area');
-  if (!gameArea) {
-    console.warn('#game-area 요소를 찾을 수 없습니다.');
-    return;
+window.addEventListener('load', function(){
+  const canvas = this.document.getElementById('canvas1');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 800;
+  canvas.height = 720;
+
+  class InputHandler{
+    constructor(){
+      this.keys = [];
+
+      window.addEventListener('keydown', e => {
+        if (e.key === 'ArrowUp' && this.keys.indexOf(e.key) === -1 ){
+          this.keys.push(e.key);
+        }
+        // console.log(e.key, this.keys);
+      });
+
+      window.addEventListener('keyup', e => {
+        if (e.key === 'ArrowUp'){
+          this.keys.splice(this.keys.indexOf(e.key), 1);
+        }
+        // console.log(e.key, this.keys);
+      });
+
+    }
+
   }
 
-  // 뷰포트 기준 좌표 및 크기
-  const rect = gameArea.getBoundingClientRect();
-  console.log('Viewport 기준 좌표와 크기:', rect);
-  // → { top, right, bottom, left, width, height, x, y }
+  class Player{
+  constructor (gameWidth, gameHeight){ 
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
+    this.width = 32;
+    this.height = 32;
+    this.x = 0;
+    this.y = this.gameHeight - this.height;
+    this.image = document.getElementById('playerImage');
+    this.frameX = 0;
+    this.frameY = 0;
+    this.speed = 0;
+    this.vy = 0;
 
-  // 문서 전체 기준 절대 좌표
-  const absX = rect.left + window.scrollX;
-  const absY = rect.top  + window.scrollY;
-  console.log(`문서 기준 절대 좌표: x=${absX}, y=${absY}`);
+  }
+  draw(context){
+  context.fillStyle = 'white';
+  context.fillRect(this.x, this.y, this.width, this.height);
+  context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, 
+                    this.width, this.height, this.x, this.y, this.width, this.height);
+  }
+  update(input){
+    if (input.keys.indexOf('ArrowUp') > -1) { 
+      this.speed = 5;
+    } else {
+      this.speed= 0;
+    }
 
-  console.log(`width=${rect.width}, height=${rect.height}`);
-});
+    this.x += this.speed;
+    this.y
+    if (this.x < 0) this.x = 0;
+    else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
+
+  }
+
+
+  }
+
+  class Background{
+
+
+
+  }
+  class Door{
+
+
+  }
+
+  function handleDoors(){
+
+
+  }
+
+  function displayStatusText(){
+
+  }
+
+  const input = new InputHandler();
+  const player = new Player(canvas.width, canvas.height);
+
+  function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    player.draw(ctx);
+    player.update();
+    requestAnimationFrame(animate);
+
+  }
+  animate();
+
+})
