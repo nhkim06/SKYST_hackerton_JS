@@ -3,7 +3,7 @@ body {
   padding: 0;
   background-color: #111;
   color: white;
-  font-family: 'Pixelify Sans', sans-serif;
+  font-family: "Black Han Sans", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,8 +15,8 @@ body {
 .line {
   opacity: 0;
   transition: opacity 1s ease-in;
-  font-size: 28px;
-  margin: 10px;
+  font-size: 30px;
+  margin: 20px;
 }
 
 .visible {
@@ -24,14 +24,17 @@ body {
 }
 
 #buttons button {
-  margin: 10px;
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
   padding: 10px 20px;
-  font-size: 18px;
-  background-color: #2ecc71;
+  background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 #buttons button:hover {
