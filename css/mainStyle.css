@@ -1,15 +1,15 @@
 body {
-  background-attachment: scroll;
+  background: black;
 }
 
-img.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 1000px;
+#canvas1{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid white;
 }
 
-#game-area{
-  
+#playerImage, #backgroundImage, #doorImage{
+  display:none;
 }
