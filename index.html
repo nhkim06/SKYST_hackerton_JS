@@ -4,15 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>리듬 게임</title>
+
+  <!-- ✅ Pixelify Sans 폰트 추가 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div id="score-display">Score: 0</div>
+
   <div id="game-area">
     <img src="assets/piano.png" id="piano" alt="Piano" />
   </div>
 
-  <!-- 🎵 음악 파일 이름 변경됨 -->
+  <!-- 🎵 배경 음악 -->
   <audio id="bgm" src="assets/music.mp3" preload="auto"></audio>
 
   <script src="js/script.js"></script>
