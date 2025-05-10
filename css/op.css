@@ -1,0 +1,18 @@
+/* 全体のマージンやスクロール防止 */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* 背景画像エリア */
+  #op-area {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/background_op.jpg"); /* パスは調整してください */
+    background-size: cover;       /* 画面にぴったり */
+    background-position: center;  /* 真ん中に配置 */
+    background-repeat: no-repeat; /* 繰り返さない */
+  }
+  
