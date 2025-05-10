@@ -15,8 +15,8 @@ body {
 .line {
   opacity: 0;
   transition: opacity 1s ease-in;
-  font-size: 28px;
-  margin: 10px;
+  font-size: 30px;
+  margin: 20px;
 }
 
 .visible {
@@ -27,7 +27,7 @@ body {
   font-family: "Black Han Sans", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 16px;
+  font-size: 20px;
   padding: 10px 20px;
   background-color: #4caf50;
   color: white;
