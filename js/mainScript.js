@@ -3,6 +3,7 @@ window.addEventListener('load', function(){
   const ctx = canvas.getContext('2d');
   canvas.width = 800;
   canvas.height = 720;
+  let nextScene = false;
 
   class InputHandler{
     constructor(){
@@ -48,10 +49,20 @@ window.addEventListener('load', function(){
   draw(context){
   // context.fillStyle = 'white';
   // context.fillRect(this.x, this.y, this.width, this.height);
+  context.strokeRect(this.x, this.y, this.width, this.height);
   context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, 
                     this.width, this.height, this.x, this.y, this.width, this.height);
   }
-  update(input, deltaTime){
+  update(input, deltaTime, door){
+    // collition detection
+    const dx = door.x - this.x;
+    const dy = door.y - this.y;
+    const distance = Math.sqrt( dx*dx + dy*dy );
+    if ( distance + 24 < door.width/2 + this.width/2){
+      nextScene = true;
+    }
+
+
 
     if (input.keys.indexOf('ArrowUp') > -1) { 
       this.speed = 5;
@@ -104,6 +115,7 @@ window.addEventListener('load', function(){
 
     }
     draw(context){
+      context.strokeRect(this.x, this.y, this.width, this.height);
       context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
   }
@@ -121,6 +133,7 @@ window.addEventListener('load', function(){
     context.strokeText(text, x, y);
     context.fillStyle = 'black';
     context.fillText(text, x, y);
+
   }
 
 
@@ -140,14 +153,20 @@ window.addEventListener('load', function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background.draw(ctx);
     player.draw(ctx);
-    player.update(input, deltaTime);
+    player.update(input, deltaTime, door1);
     door1.draw(ctx);
     door2.draw(ctx);
     door3.draw(ctx);
     displayStatusText(ctx);
-    requestAnimationFrame(animate);
 
+    if (nextScene) {
+      // next scene
+    }
+    else {
+      requestAnimationFrame(animate);
+    }
   }
   animate(0);
+  
 
 })
