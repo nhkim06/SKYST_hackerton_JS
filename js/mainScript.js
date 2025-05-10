@@ -179,7 +179,7 @@ window.addEventListener('load', () => {
       }
       else if (sceneNum === 4){
         localStorage.setItem('scene', sceneNum+1);
-        window.location.href = 'index.html';
+        window.location.href = 'week4-video.html';
     } }
     else {
       requestAnimationFrame(animate);
