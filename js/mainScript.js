@@ -1,12 +1,27 @@
 // Todo : sceneNum 값 업데이트, 다음 넘어갈 html 파일 업데이트
 
-window.addEventListener('load', function(){
+//get json data
+async function getJSONdata() {
+  const res = await fetch("https://nhkim06.github.io/SKYST_db.json");
+  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  return res.json();
+}
+
+window.addEventListener('load', async () => {
   const canvas = this.document.getElementById('canvas1');
   const ctx = canvas.getContext('2d');
   canvas.width = 800;
   canvas.height = 720;
   let nextScene = false;
   let sceneNum = 1;
+  
+  try {
+    const datas = await getJSONdata();
+    const sceneNum = datas.scene;
+  } catch (err) {
+    console.error('데이터 로드 실패:', err);
+  }
+  // console.log(sceneNum);
 
   class InputHandler{
     constructor(){
