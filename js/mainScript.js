@@ -3,6 +3,7 @@ window.addEventListener('load', function(){
   const ctx = canvas.getContext('2d');
   canvas.width = 800;
   canvas.height = 720;
+  let nextScene = false;
 
   class InputHandler{
     constructor(){
@@ -32,24 +33,48 @@ window.addEventListener('load', function(){
     this.gameHeight = gameHeight;
     this.width = 128;
     this.height = 126;
-    this.x = 0;
+    this.x = 150;
     this.y = this.gameHeight - this.height;
     this.image = document.getElementById('playerImage');
-    this.frameX = 0;
+    this.frameX = 1;
+    this.maxFrame = 3;
     this.frameY = 0;
+    this.fps = 20;
+    this.frameTimer = 0;
+    this.frameInterval = 1000/this.fps;
     this.speed = 0;
     this.vy = 0;
 
   }
   draw(context){
-  context.fillStyle = 'white';
-  context.fillRect(this.x, this.y, this.width, this.height);
+  // context.fillStyle = 'white';
+  // context.fillRect(this.x, this.y, this.width, this.height);
+  context.strokeRect(this.x, this.y, this.width, this.height);
   context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, 
                     this.width, this.height, this.x, this.y, this.width, this.height);
   }
-  update(input){
+  update(input, deltaTime, door){
+    // collition detection
+    const dx = door.x - this.x;
+    const dy = door.y - this.y;
+    const distance = Math.sqrt( dx*dx + dy*dy );
+    if ( distance + 24 < door.width/2 + this.width/2){
+      nextScene = true;
+    }
+
+
+
     if (input.keys.indexOf('ArrowUp') > -1) { 
       this.speed = 5;
+
+      if (this.frameTimer > this.frameInterval){
+        if (this.frameX >= this.maxFrame) this.frameX = 0;
+        else this.frameX++;
+        this.frameTimer = 0;
+      } else {
+        this.frameTimer += deltaTime;
+      }
+
     } else {
       this.speed= 0;
     }
@@ -75,38 +100,73 @@ window.addEventListener('load', function(){
     }
     draw(context){
       context.drawImage(this.image, this.x, this.y, this.width, this.height);
-
     }
-
-
 
   }
   class Door{
+    constructor (gameWidth, gameHeight, x, y){ 
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+      this.width = 128;
+      this.height = 120;
+      this.image = document.getElementById('doorImage');
+      this.x = x;
+      this.y = y;
 
+    }
+    draw(context){
+      context.strokeRect(this.x, this.y, this.width, this.height);
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+  }
+
+  function displayStatusText(context){
+    const text = '위쪽 화살표를 눌러 이동하세요.';
+    const x = 20;
+    const y = 50;
+
+    context.font = 'bold 30px Helvetica';
+    context.lineWidth = 4;
+    context.strokeStyle = 'white';
+    context.lineJoin = 'round';
+
+    context.strokeText(text, x, y);
+    context.fillStyle = 'black';
+    context.fillText(text, x, y);
 
   }
 
-  function handleDoors(){
-
-
-  }
-
-  function displayStatusText(){
-
-  }
 
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
   const background = new Background(canvas.width, canvas.height);
+  const door1 = new Door(canvas.width, canvas.height, 530, 600);
+  const door2 = new Door(canvas.width, canvas.height, 145, 410);
+  const door3 = new Door(canvas.width, canvas.height, 530, 250);
 
-  function animate(){
+  let lastTime = 0;
+
+  function animate(timeStamp){
+    const deltaTime = timeStamp - lastTime;
+    lastTime = timeStamp;
+    // console.log(deltaTime);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background.draw(ctx);
     player.draw(ctx);
-    player.update(input);
-    requestAnimationFrame(animate);
+    player.update(input, deltaTime, door1);
+    door1.draw(ctx);
+    door2.draw(ctx);
+    door3.draw(ctx);
+    displayStatusText(ctx);
 
+    if (nextScene) {
+      // next scene
+    }
+    else {
+      requestAnimationFrame(animate);
+    }
   }
-  animate();
+  animate(0);
+  
 
 })
