@@ -18,7 +18,7 @@ message.style.position = "absolute";
 message.style.top = "10%";
 message.style.left = "50%";
 message.style.transform = "translateX(-50%)";
-message.style.fontSize = "48px";
+message.style.fontSize = "56px";
 message.style.fontWeight = "bold";
 message.style.color = "white";
 message.style.zIndex = "20";
@@ -73,6 +73,12 @@ function showGameOverMessage(isTimeout = false) {
 
   if (isSuccess) {
     applause.play();
+    // 🎉 콘페티 효과
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 }
+    });
   } else {
     boo.play();
   }
@@ -145,7 +151,6 @@ function startGame() {
   }, 5000);
 }
 
-// 🎹 음악 재생 & 게임 시작 (사용자 입력 필요)
 document.addEventListener("keydown", (e) => {
   if (!gameStarted && e.key === "Enter") {
     bgm.volume = 1.0;
@@ -211,11 +216,10 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// 🎵 음악 재생이 끝났을 때 성공 처리
 bgm.addEventListener("ended", () => {
   if (!gameOverTriggered) {
     freeze = true;
     clearInterval(spawnInterval);
-    showGameOverMessage(true); // ✅ timeout으로 success 출력
+    showGameOverMessage(true);
   }
 });

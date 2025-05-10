@@ -3,7 +3,7 @@ body {
   padding: 0;
   background: url("../assets/stage.png") no-repeat center center;
   background-size: cover;
-  font-family: 'Pixelify Sans', sans-serif; /* ✅ 폰트 적용 */
+  font-family: 'Pixelify Sans', sans-serif;
 }
 
 #game-area {
@@ -29,7 +29,7 @@ body {
   border-radius: 50%;
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 22px;
   text-align: center;
   line-height: 40px;
   animation: fall 3s linear forwards;
