@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>축하 페이지</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: 'Pixelify Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-size: 28px;
+      text-align: center;
+    }
+    .line {
+      opacity: 0;
+      transition: opacity 1s ease-in;
+      margin: 10px 0;
+    }
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="line1" class="line">축하합니다! 드디어 4주차까지 오셨네요.</div>
+  <div id="line2" class="line">(대충 꿈을 이룰 수 있다는 희망적인 말)</div>
+  <div id="line3" class="line">당신의 꿈을 응원합니다.</div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("line1").classList.add("visible");
+    }, 0);
+
+    setTimeout(() => {
+      document.getElementById("line2").classList.add("visible");
+    }, 2000);
+
+    setTimeout(() => {
+      document.getElementById("line3").classList.add("visible");
+    }, 4000);
+  </script>
+</body>
+</html>
