@@ -2,8 +2,7 @@ const dialogBox = document.getElementById("dialog-box");
 const bgm = document.getElementById("bgm");
 
 const dialogs = [
-  "엄마 > 음악 따위는 하지 말고 공부나 열심히 해라.",
-  "신해철 > ...알겠습니다."
+  "신해철 > 당신의 꿈을 알려주세요."
 ];
 
 let currentIndex = 0;
