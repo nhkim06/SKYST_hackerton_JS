@@ -1,4 +1,5 @@
 const dialogBox = document.getElementById("dialog-box");
+const bgm = document.getElementById("bgm");
 
 const dialogs = [
   "엄마 > 음악 따위는 하지 말고 공부나 열심히 해라.",
@@ -15,6 +16,10 @@ function typeText(text) {
   charIndex = 0;
   isTyping = true;
 
+  // 話し始めたらBGM再生
+  bgm.currentTime = 0;
+  bgm.play();
+
   typingInterval = setInterval(() => {
     dialogBox.textContent += text.charAt(charIndex);
     charIndex++;
@@ -22,16 +27,17 @@ function typeText(text) {
     if (charIndex >= text.length) {
       clearInterval(typingInterval);
       isTyping = false;
+      bgm.pause(); // タイピング終了時にBGM停止
     }
-  }, 50); // ← 表示速度（50msごとに1文字）
+  }, 50);
 }
 
 function nextDialog() {
   if (isTyping) {
-    // タイピング中にクリックされたら、全文を一気に表示
     clearInterval(typingInterval);
     dialogBox.textContent = dialogs[currentIndex - 1];
     isTyping = false;
+    bgm.pause(); // タイピング飛ばし時も止める
     return;
   }
 
@@ -40,14 +46,10 @@ function nextDialog() {
     currentIndex++;
     typeText(currentText);
   } else {
-    dialogBox.textContent = ""; // 終了後は非表示（任意）
+    dialogBox.textContent = "";
   }
 }
 
-// 最初のセリフ表示
-nextDialog();
-
-// Enterキーで次のセリフ（または全文表示）
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     nextDialog();
