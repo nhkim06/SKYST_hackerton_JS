@@ -13,6 +13,6 @@ document.getElementById("submit").addEventListener("click", () => {
   localStorage.setItem("scene", "2");
 
   // 저장 완료 메시지 출력 후 메인 화면으로 이동
-  alert("답변이 저장되었습니다!");
+  alert("답변이 저장되었습니다! 메인 화면으로 이동합니다.");
   window.location.href = "main.html";
 });
