@@ -2,6 +2,7 @@ const gameArea = document.getElementById("game-area");
 const piano = document.getElementById("piano");
 const scoreDisplay = document.getElementById("score-display");
 const bgm = document.getElementById("bgm");
+const nextBtn = document.getElementById("next-button");
 
 const applause = new Audio("assets/applause.mp3");
 const boo = new Audio("assets/boo.mp3");
@@ -40,7 +41,7 @@ function showGameOverMessage(isTimeout = false) {
   message.dataset.shown = "true";
   gameOverTriggered = true;
 
-  const isSuccess = score >= 1500;
+  const isSuccess = score >= 50;
   message.style.top = "10%";
   message.style.color = isSuccess ? "lightgreen" : "red";
   message.style.backgroundColor = "black";
@@ -50,10 +51,7 @@ function showGameOverMessage(isTimeout = false) {
   message.style.textAlign = "center";
 
   let html = "";
-  if (!isTimeout) {
-    html += `<div>GAME OVER</div>`;
-  }
-
+  if (!isTimeout) html += `<div>GAME OVER</div>`;
   html += `
     <div style="font-size: 32px; margin-top: 20px;">Final Score: ${score}</div>
     <div style="font-size: 28px; margin-top: 10px;">
@@ -73,19 +71,18 @@ function showGameOverMessage(isTimeout = false) {
 
   if (isSuccess) {
     applause.play();
-    // 🎉 콘페티 효과
-    confetti({
-      particleCount: 200,
-      spread: 120,
-      origin: { y: 0.6 }
-    });
+    confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+    nextBtn.style.display = "block";
   } else {
     boo.play();
   }
 }
 
-const keyToIndex = { a: 0, s: 1, d: 2, f: 3, j: 4, k: 5, l: 6 };
+nextBtn.onclick = () => {
+  window.location.href = "next.html";
+};
 
+const keyToIndex = { a: 0, s: 1, d: 2, f: 3, j: 4, k: 5, l: 6 };
 const notePositions = [
   "calc(50% - 180px)",
   "calc(50% - 130px)",
@@ -102,7 +99,6 @@ function updateScoreDisplay() {
 
 function spawnNote() {
   if (!gameStarted || freeze) return;
-
   const index = Math.floor(Math.random() * 7);
   const note = document.createElement("div");
   note.classList.add("note");
@@ -112,7 +108,6 @@ function spawnNote() {
   else if (index === 2) left = "calc(50% - 90px)";
   else if (index === 5) left = "calc(50% + 80px)";
   note.style.left = left;
-
   note.style.backgroundColor = index >= 4 ? "blue" : "red";
   note.dataset.index = index;
   note.dataset.hit = "false";
@@ -130,7 +125,6 @@ function spawnNote() {
       updateScoreDisplay();
       showMessage("MISS", 800);
       note.remove();
-
       if (missStreak >= 5) {
         freeze = true;
         clearInterval(spawnInterval);
@@ -141,10 +135,8 @@ function spawnNote() {
 }
 
 let spawnInterval;
-
 function startGame() {
   showMessage("Get Ready...", 5000);
-
   setTimeout(() => {
     gameStarted = true;
     spawnInterval = setInterval(spawnNote, 1000);
@@ -160,10 +152,8 @@ document.addEventListener("keydown", (e) => {
   }
 
   if (!gameStarted || freeze) return;
-
   const key = e.key.toLowerCase();
   if (!keyToIndex.hasOwnProperty(key)) return;
-
   const index = keyToIndex[key];
   const pianoRect = piano.getBoundingClientRect();
   const top = pianoRect.top;
@@ -176,20 +166,13 @@ document.addEventListener("keydown", (e) => {
   if (notes.length > 0) {
     const note = notes[0];
     const r = note.getBoundingClientRect();
-
     if (r.top >= top && r.bottom <= bottom) {
       note.dataset.hit = "true";
       note.style.backgroundColor = "green";
       combo++;
       missStreak = 0;
-
-      if (combo % 5 === 0) {
-        score += 30;
-        showMessage("COMBO!!", 1500);
-      } else {
-        score += 10;
-        showMessage("GOOD", 800);
-      }
+      score += combo % 5 === 0 ? 30 : 10;
+      showMessage(combo % 5 === 0 ? "COMBO!!" : "GOOD", combo % 5 === 0 ? 1500 : 800);
     } else {
       note.dataset.hit = "true";
       note.style.opacity = "0.5";
@@ -198,7 +181,6 @@ document.addEventListener("keydown", (e) => {
       score -= 10;
       showMessage("MISS", 800);
     }
-
     updateScoreDisplay();
     setTimeout(() => note.remove(), 200);
   } else {

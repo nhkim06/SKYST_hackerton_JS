@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  color: white;
+  font-family: 'Pixelify Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+.line {
+  opacity: 0;
+  transition: opacity 1s ease-in;
+  font-size: 28px;
+  margin: 10px;
+}
+
+.visible {
+  opacity: 1;
+}
+
+#buttons button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#buttons button:hover {
+  background-color: #27ae60;
+}
