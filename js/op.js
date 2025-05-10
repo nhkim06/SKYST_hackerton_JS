@@ -1,3 +1,5 @@
+console.log("✅ op.js loaded");
+
 const dialogBox = document.getElementById("dialog-box");
 const bgm = document.getElementById("bgm");
 
@@ -15,19 +17,16 @@ function typeText(text) {
   dialogBox.textContent = "";
   charIndex = 0;
   isTyping = true;
-
-  // 話し始めたらBGM再生
   bgm.currentTime = 0;
   bgm.play();
 
   typingInterval = setInterval(() => {
     dialogBox.textContent += text.charAt(charIndex);
     charIndex++;
-
     if (charIndex >= text.length) {
       clearInterval(typingInterval);
       isTyping = false;
-      bgm.pause(); // タイピング終了時にBGM停止
+      bgm.pause();
     }
   }, 50);
 }
@@ -37,7 +36,7 @@ function nextDialog() {
     clearInterval(typingInterval);
     dialogBox.textContent = dialogs[currentIndex - 1];
     isTyping = false;
-    bgm.pause(); // タイピング飛ばし時も止める
+    bgm.pause();
     return;
   }
 
@@ -46,7 +45,14 @@ function nextDialog() {
     currentIndex++;
     typeText(currentText);
   } else {
-    dialogBox.textContent = "";
+    goToNextPage();
+  }
+}
+
+function goToNextPage() {
+  if (currentIndex >= dialogs.length) {
+    localStorage.setItem("scene", "3"); // ✅ scene 갱신
+    window.location.href = "week2-question.html";
   }
 }
 
@@ -55,4 +61,3 @@ document.addEventListener("keydown", function (event) {
     nextDialog();
   }
 });
-
